@@ -23,6 +23,6 @@ def preprocess_df(df, start_halving=2):
 
     return df
 
-def preprocess_for_prophet(df, predicted_col="day_close"):
-    df[["ds", "y"]] = df[["Time", predicted_col]]
-    return df[["ds", "y"]]
+def preprocess_for_prophet(df, predicted_col="day_close", extra_columns=[]):
+    df[["ds", "y"] + extra_columns] = df[["Time", predicted_col] + extra_columns]
+    return df[["ds", "y"] + extra_columns]
