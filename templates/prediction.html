@@ -1,0 +1,34 @@
+{% extends 'base.html'%} 
+
+{%block head%}
+{%endblock%} 
+
+
+{%block body%}
+    <div class = 'content-section'>
+        <form method="POST" action="">
+            {{ form.hidden_tag()}}
+            <fieldset class = 'form-group'>
+                <legend class = 'border-bottom mb-4'>Predict</legend>
+                <div class="form-group">
+                    {{ form.days_to_predict.label(class="form-control-label")}}
+
+                    {% if form.days_to_predict.errors %}
+                    {{ form.days_to_predict(class="form-control form-control-lg is-invalid") }}
+                    <div class="invalid-feedback">
+                        {% for error in form.days_to_predict.errors %}
+                            <span>{{ error }}</span>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    {{ form.days_to_predict(class="form-control form-control-lg") }}
+                {% endif %}
+                </div>
+            </fieldset>
+            <div class= 'form-group'>
+                {{form.submit(class="btn btn-primary")}}
+            </div>
+        </form>
+    </div>
+{%endblock%}
+
