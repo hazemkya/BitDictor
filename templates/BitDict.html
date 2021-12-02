@@ -1,0 +1,71 @@
+{% extends 'base.html'%} {%block head%} {%endblock%} {%block body%}
+<div class="content-section">
+  <form method="POST" action="">
+    {{ form.hidden_tag()}}
+    <fieldset class="form-group">
+      <legend class="border-bottom mb-4">Predict</legend>
+      <div class="form-group">
+        {{ form.days_to_predict.label(class="form-control-label")}} {% if
+        form.days_to_predict.errors %} {{
+        form.days_to_predict(class="form-control form-control-lg is-invalid") }}
+        <div class="invalid-feedback">
+          {% for error in form.days_to_predict.errors %}
+          <span>{{ error }}</span>
+          {% endfor %}
+        </div>
+        {% else %} {{ form.days_to_predict(class="form-control form-control-lg")
+        }} {% endif %}
+      </div>
+    </fieldset>
+    <div class="form-group">{{form.submit(class="btn btn-primary")}}</div>
+  </form>
+</div>
+
+<div class="content-section">
+  <fieldset class="form-group">
+    {% with messages = get_flashed_messages(with_categories=true) %} {% if
+    messages %} {% for category, message in messages %}
+    <legend class="border-bottom mb-4">{{ message }}</legend>
+    {% endfor %} {% endif %} {% endwith %}
+    <div class="form-group">
+      <canvas id="lineChart"></canvas>
+      <script>
+        var ctx = document.getElementById('lineChart').getContext('2d');
+        var lineChart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: {{ Labels | safe }},
+                datasets: [
+                    {
+                    label: 'Price',
+                    data: {{ values | safe }},
+                    fill: false,
+                    borderColor:'rgb(75, 192, 192)',
+                    lineTension: 0.1
+                    }
+                ]
+            },
+            options:{
+                responsive: true,
+
+            },
+        });
+      </script>
+      <h2 class='table__title'>Prediction Tables</small></h2>
+      <table class="table">
+        <tr class="table__header">
+          <th class="table_cell">Date</th>
+          <th>Price</th>
+        </tr>
+        {% for row in table_data %}
+        <tr class="table__row">
+          {% for cell in row %}
+          <td class="table_cell">{{cell}}</td>
+          {% endfor %}
+        </tr>
+        {% endfor %}
+      </table>
+    </div>
+  </fieldset>
+</div>
+{%endblock%}

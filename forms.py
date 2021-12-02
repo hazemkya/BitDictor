@@ -6,8 +6,6 @@ def int_check(form, field):
     if type(field.data) != type(int):
         raise ValidationError('Number must be an integer')
 
-class prediction(FlaskForm):
-    days_to_predict = IntegerField('Days to predict', validators=[NumberRange(min=1, max= 10), DataRequired()])
+class prediction_Input(FlaskForm):
+    days_to_predict = IntegerField('Days to predict', validators=[NumberRange(min=1, max= 100), DataRequired()])
     submit = SubmitField('Predict')
-
-
