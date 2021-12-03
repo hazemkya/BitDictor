@@ -43,7 +43,7 @@ def BitDict():
         redirect(url_for('home'))
 
     temp = q.enqueue(
-        model_selection.get_prediction(), days)
+        model_selection.get_prediction(days))
     print(temp)
     Labels, values, predicted = 1, 4, 2
     return render_template('BitDict.html', title='BitDict',
