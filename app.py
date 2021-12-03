@@ -24,10 +24,7 @@ def home():
             flash(f'Predicting for {days} days..', 'success')
         session['days'] = days
         get_prediction()
-        time.sleep(3)
-        while len(q) != 0:
-            time.sleep(1)
-        return redirect(url_for('BitDict'))
+
     return render_template('prediction.html', title='home', form=form)
 
 
@@ -39,13 +36,17 @@ def get_prediction():
         redirect(url_for('home'))
     results = q.enqueue(
         model_selection.get_prediction, days)
-    time.sleep(2)
+    time.sleep(10)
     while results.result == None:
+        time.sleep(1)
+
+    time.sleep(3)
+    while len(q) != 0:
         time.sleep(1)
 
     session['result'] = results
 
-    return results
+    return redirect(url_for('BitDict'))
 
 
 @app.route('/BitDict', methods=['GET', 'POST'])
