@@ -7,7 +7,7 @@ from rq import Queue
 from worker import conn
 
 app = Flask(__name__)
-
+q = Queue(connection=conn)
 app.config['SECRET_KEY'] = 'BitDictor'
 
 
@@ -37,7 +37,6 @@ def BitDict():
             flash(f'Predicting for {days} days..', 'success')
         session['days'] = days
         return redirect(url_for('BitDict'))
-    q = Queue(connection=conn)
     if 'days' in session:
         days = session['days']
     else:
