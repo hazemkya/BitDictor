@@ -39,16 +39,11 @@ def BitDict():
     if 'days' in session:
         days = session['days']
     else:
-        redirect(url_for('predict'))
+        redirect(url_for('home'))
     Labels, values, predicted = model_selection.get_prediction(days)
     return render_template('BitDict.html', title='BitDict',
                            form=form, Labels=Labels, values=list(values),
                            table_data=predicted)
-
-
-@app.route("/documentation")
-def documentation():
-    return render_template('documentation.html', title='Documentation')
 
 
 if __name__ == '__main__':
