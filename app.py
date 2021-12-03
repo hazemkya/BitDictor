@@ -29,7 +29,6 @@ def home():
 
 @app.route('/BitDict', methods=['GET', 'POST'])
 def BitDict():
-    results = None
     form = prediction_Input()
     days = form.days_to_predict.data
     if form.validate_on_submit():
@@ -43,9 +42,11 @@ def BitDict():
         days = session['days']
     else:
         redirect(url_for('home'))
-    while results != None:
-        results = q.enqueue(
-            model_selection.get_prediction, days)
+    results = q.enqueue(
+        model_selection.get_prediction, days)
+    time.sleep(2)
+    while len(q) != 0:
+        time.sleep(1)
 
     print(results)
 
