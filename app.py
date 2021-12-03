@@ -29,6 +29,7 @@ def home():
 
 @app.route('/BitDict', methods=['GET', 'POST'])
 def BitDict():
+    results = None
     form = prediction_Input()
     days = form.days_to_predict.data
     if form.validate_on_submit():
