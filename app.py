@@ -3,6 +3,8 @@ from flask.templating import render_template
 from wtforms.fields.core import Label
 from forms import prediction_Input
 import model_selection
+from rq import Queue
+from worker import conn
 
 app = Flask(__name__)
 
@@ -35,12 +37,13 @@ def BitDict():
             flash(f'Predicting for {days} days..', 'success')
         session['days'] = days
         return redirect(url_for('BitDict'))
-
+    q = Queue(connection=conn)
     if 'days' in session:
         days = session['days']
     else:
         redirect(url_for('home'))
-    Labels, values, predicted = model_selection.get_prediction(days)
+    Labels, values, predicted = q.enqueue(
+        model_selection.get_prediction(days), 'http://heroku.com')
     return render_template('BitDict.html', title='BitDict',
                            form=form, Labels=Labels, values=list(values),
                            table_data=predicted)
