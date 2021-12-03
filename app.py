@@ -23,8 +23,26 @@ def home():
         else:
             flash(f'Predicting for {days} days..', 'success')
         session['days'] = days
+        get_prediction()
         return redirect(url_for('BitDict'))
     return render_template('prediction.html', title='home', form=form)
+
+
+def get_prediction():
+
+    if 'days' in session:
+        days = session['days']
+    else:
+        redirect(url_for('home'))
+    results = q.enqueue(
+        model_selection.get_prediction, days)
+    time.sleep(2)
+    while results.result == None:
+        time.sleep(1)
+
+    session['result'] = results
+
+    return results
 
 
 @app.route('/BitDict', methods=['GET', 'POST'])
@@ -42,14 +60,12 @@ def BitDict():
         days = session['days']
     else:
         redirect(url_for('home'))
-    results = q.enqueue(
-        model_selection.get_prediction, days)
-    time.sleep(2)
-    while results.result == None:
-        time.sleep(1)
 
-    print(results)
-    print(results.result)
+    if 'result' in session:
+        results = session['result']
+    else:
+        redirect(url_for('home'))
+
     Labels, values, predicted = results.result
     return render_template('BitDict.html', title='BitDict',
                            form=form, Labels=Labels, values=list(values),
