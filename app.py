@@ -17,14 +17,22 @@ app.config['SECRET_KEY'] = 'BitDictor'
 def home():
     form = prediction_Input()
     days = form.days_to_predict.data
+    wait_time = 9000
+    seconds = wait_time / 1000
+    redirect_url = '/BitDict'
     if form.validate_on_submit():
         if form.days_to_predict.data == 1:
             flash(f'Predicting for {days} day..', 'success')
         else:
             flash(f'Predicting for {days} days..', 'success')
         session['days'] = days
-        get_prediction()
 
+        get_prediction()
+        time.sleep(3)
+        while len(q) != 0:
+            time.sleep(1)
+
+        return f"<html><body><p>You will be redirected in { seconds } seconds</p><script>var timer = setTimeout(function() {{window.location='{ redirect_url }'}}, { wait_time });</script></body></html>"
     return render_template('prediction.html', title='home', form=form)
 
 
@@ -36,17 +44,13 @@ def get_prediction():
         redirect(url_for('home'))
     results = q.enqueue(
         model_selection.get_prediction, days)
-    time.sleep(10)
+    time.sleep(2)
     while results.result == None:
-        time.sleep(1)
-
-    time.sleep(3)
-    while len(q) != 0:
         time.sleep(1)
 
     session['result'] = results
 
-    return redirect(url_for('BitDict'))
+    return results
 
 
 @app.route('/BitDict', methods=['GET', 'POST'])
