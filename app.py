@@ -24,6 +24,9 @@ def home():
             flash(f'Predicting for {days} days..', 'success')
         session['days'] = days
         get_prediction()
+        time.sleep(3)
+        while len(q) != 0:
+            time.sleep(1)
         return redirect(url_for('BitDict'))
     return render_template('prediction.html', title='home', form=form)
 
