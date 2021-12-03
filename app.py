@@ -45,12 +45,12 @@ def BitDict():
     results = q.enqueue(
         model_selection.get_prediction, days)
     time.sleep(2)
-    while len(q) != 0:
+    while results.result == None:
         time.sleep(1)
 
     print(results)
-
-    Labels, values, predicted = results
+    print(results.result)
+    Labels, values, predicted = results.result
     return render_template('BitDict.html', title='BitDict',
                            form=form, Labels=Labels, values=list(values),
                            table_data=predicted)
