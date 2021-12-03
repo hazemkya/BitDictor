@@ -42,8 +42,9 @@ def BitDict():
         days = session['days']
     else:
         redirect(url_for('home'))
-    results = q.enqueue(
-        model_selection.get_prediction, days)
+    while results != None:
+        results = q.enqueue(
+            model_selection.get_prediction, days)
 
     print(results)
 
