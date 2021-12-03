@@ -5,9 +5,10 @@ from forms import prediction_Input
 import model_selection
 from rq import Queue
 from worker import conn
+import time
 
 app = Flask(__name__)
-q = Queue(connection=conn)
+q = Queue('high', connection=conn)
 app.config['SECRET_KEY'] = 'BitDictor'
 
 
@@ -42,10 +43,12 @@ def BitDict():
     else:
         redirect(url_for('home'))
 
-    temp = q.enqueue(
+    results = q.enqueue(
         model_selection.get_prediction(days))
-    print(temp)
-    Labels, values, predicted = 1, 4, 2
+    time.sleep(2)
+
+    print(results.result)
+    Labels, values, predicted = results.result
     return render_template('BitDict.html', title='BitDict',
                            form=form, Labels=Labels, values=list(values),
                            table_data=predicted)

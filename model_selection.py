@@ -29,8 +29,9 @@ def get_prediction(days):
     time_merged = time_merged.astype(str)
     close_merged = close_merged.astype(int)
     print('done get prediction..')
+    output = list(time_merged), np.array(close_merged), predicted
 
-    return list(time_merged), np.array(close_merged), predicted
+    return output
 
 
 def to_list(time_merged, close_merged, days):
