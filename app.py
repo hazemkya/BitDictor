@@ -42,7 +42,7 @@ def BitDict():
     else:
         redirect(url_for('home'))
     Labels, values, predicted = q.enqueue(
-        model_selection.get_prediction(days), 'http://heroku.com')
+        model_selection.get_prediction(), days)
     return render_template('BitDict.html', title='BitDict',
                            form=form, Labels=Labels, values=list(values),
                            table_data=predicted)
