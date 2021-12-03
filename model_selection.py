@@ -22,12 +22,13 @@ def get_prediction(days):
     final.dropna(inplace=True)
 
     data = pf.predict(final)
-
+    print('done predicting..')
     time_merged, close_merged = merge_data(df, data)
     predicted = to_list(time_merged, close_merged, days)
     close_merged = close_merged.round(0)
     time_merged = time_merged.astype(str)
     close_merged = close_merged.astype(int)
+    print('done get prediction..')
 
     return list(time_merged), np.array(close_merged), predicted
 
@@ -54,5 +55,4 @@ def merge_data(df, data):
     Time = df['Time']
     ds = data['ds']
     time_merged = pd.concat([Time, ds.loc[len(ds)-2:]])
-
     return time_merged, close_merged
