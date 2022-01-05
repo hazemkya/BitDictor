@@ -1,4 +1,4 @@
-##### NOT LEGAL ADVICE
+###### Disclaimer (NOT A LEGAL ADVICE)
 The information contained on this repository and the resources available for download through this repository is not intended as, and shall not be understood or construed as, legal advice.
 DO YOU OWN RESEARCH
 # BitDictor
